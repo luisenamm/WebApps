@@ -1,0 +1,214 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue Semestre i</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+   
+    <style>
+
+    
+
+    </style>
+
+  </head>
+  	<body>
+        <div id="lugardetrabajo">
+          {{nombre}}
+
+          <div class="ui form">
+            <div class="field">
+              <label>Autor</label>
+              <input type="text"  id="element1">
+            </div>
+
+            <div class="field">
+              <label>Título</label>
+              <input type="text" id="element2">
+            </div>
+
+            <div class="field">
+              <label>Editorial</label>
+              <input type="text" id="element3">
+            </div>
+
+            <div class="field">
+              <label>Cantidad</label>
+              <input type="text" id="element4">
+            </div>
+            <div class="field">
+              <label>Oferta</label>
+              <input type="checkbox" id="element5">
+            </div>
+
+             </div>           
+
+             <button class="ui button" v-on:click="metodo">
+              Agregar libro
+             </button>
+
+             <h3>Libros</h3>
+          <ul>
+          <li v-for="(libro,i) in ordenarLibrosCantidad">                       
+            {{libro.autor}},
+            {{libro.titulo}},
+            {{libro.editorial}},
+            {{libro.cantidad}}            
+            <span v-bind:style="styleOferta" v-if="libro.oferta">Está en oferta</span>
+            <span v-bind:style="styleNoOferta" v-else >No está en oferta</span>
+            <button class="ui button" v-on:click="editar(i)">
+              Editar libro
+            </button>
+            <button class="ui button" v-on:click="borrar(i)">
+              Eliminar libro
+            </button>
+          </li>
+        </ul>
+
+        <div>
+          <h3> Peliculas: </h3>
+          <ul>
+          <li v-for="pelicula in peliculas">                                          
+                Título: {{pelicula.Titulo}}.
+                Director: {{pelicula.Director}}.
+                Año: {{pelicula.Fecha}}.                
+          </li>
+        </ul>
+        </div>
+
+        </div>
+
+         
+       
+
+        <div id="espacio">
+           espacio
+        </div>           
+
+        <div id="abierto">          
+          La librería está abierta          
+       </div>
+
+       <div id="abreManana">
+        Sí abre mañana
+     </div>
+
+		  <script type="text/javascript">
+          //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
+          c= new Vue({
+            el: "#lugardetrabajo",
+            data :{
+              styleOferta:{
+                color:'green'
+              },
+              styleNoOferta:{
+                color:'red'
+              },
+              nombre: "La elegante vagancia",
+              abierto:true,
+              abreManana:true,
+              libros:[{
+                autor:"Ray Bradbury",
+                titulo:"Fahrenheit 451",
+                oferta:true,
+                cantidad:4,
+                editorial:"Ballantine Books"
+              },
+              {
+                autor:"Arthur C. Clarke",
+                titulo:"El fin de la infancia",
+                oferta:false,
+                cantidad:10,
+                editorial:"Ballantine Books"
+              }
+              ],
+              peliculas:[]              
+            },
+            methods:{
+              metodo:function(){
+                console.log("click");
+                var inputAutor=document.getElementById("element1").value;
+                var inputTitulo=document.getElementById("element2").value;
+                var inputEditorial=document.getElementById("element3").value;
+                var inputCantidad=document.getElementById("element4").value;
+                var inputOferta=document.getElementById("element5").checked;
+
+                document.getElementById("element1").value="";
+                document.getElementById("element2").value="";
+                document.getElementById("element3").value="";
+                document.getElementById("element4").value="";
+                document.getElementById("element5").checked=false;
+
+                this.libros.push({
+                  autor:inputAutor,
+                  titulo:inputTitulo,
+                  editorial:inputEditorial,
+                  cantidad:inputCantidad,
+                  oferta:inputOferta
+                })
+              },
+              borrar:function(i){
+                this.libros.splice(i,1);
+              },
+              editar:function(i){
+                val=this.libros[i]
+                if(document.getElementById("element1").value!="")
+                  val.autor=document.getElementById("element1").value;
+                if(document.getElementById("element2").value!="")
+                  val.titulo=document.getElementById("element2").value;                
+                if(document.getElementById("element2").value!="")
+                  val.editorial=document.getElementById("element3").value;
+                if(document.getElementById("element4").value!="")
+                  val.cantidad=document.getElementById("element4").value;                
+                val.oferta=document.getElementById("element5").checked;
+              
+
+                document.getElementById("element1").value="";
+                document.getElementById("element2").value="";
+                document.getElementById("element3").value="";
+                document.getElementById("element4").value="";
+                document.getElementById("element5").checked=false;
+              },           
+            },
+            computed:{
+              ordenarLibros: function () {
+                console.log("computed");
+                this.libros = _.orderBy(this.libros, ['autor']);
+                return this.libros;
+              },
+              ordenarLibrosCantidad: function () {
+                console.log("computed");
+                this.libros = _.orderBy(this.libros, ['cantidad']);
+                return this.libros;
+              }
+            },
+            watch:{
+              nombre:function(d){
+                console.log("algo ha cambiado");
+              },
+              abierto:function(d){
+                if(d){
+                  document.getElementById("abierto").innerHTML="La librería está abierta";
+                }else{
+                  document.getElementById("abierto").innerHTML="La librería está cerrada";
+                }
+              },
+              abreManana:function(d){
+                if(d){
+                  document.getElementById("abreManana").innerHTML="Sí abre mañana";
+                }else{
+                  document.getElementById("abreManana").innerHTML="No abre mañana"; 
+                }
+              }
+            },
+            created(){
+                console.log ("instancia creada");
+                fetch("http://localhost:8080/movies")
+                .then(response => response.json())
+                .then(data => (this.peliculas=data,console.log(data)));                
+            }            
+          });
+
+		  </script>
+	</body>
+</html>
