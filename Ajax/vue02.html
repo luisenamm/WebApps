@@ -2,15 +2,9 @@
   <head>
     <meta charset="utf-8">
     <title>Vue Semestre i</title>
-
-    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>    
-    <script
-        src="https://code.jquery.com/jquery-3.1.1.min.js"
-        integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
-        crossorigin="anonymous"></script>
-    <script src="semantic/dist/semantic.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+   
     <style>
 
     
@@ -54,56 +48,36 @@
              </button>
 
              <h3>Libros</h3>
-             <!------------------------------------------------------------------------------------------>
-             <table class="ui celled table">
-                <thead>
-                  <tr><th scope="col">Autor</th>
-                  <th scope="col">Título</th>                  
-                  <th scope="col">Editorial</th>                  
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Oferta</th>
-                </tr></thead>
-                <tbody>
-                  <tr v-for="(libro,i) in ordenarLibrosCantidad">
-                    <td data-label="Autor" align="center">{{ libro.autor }}</td>
-                    <td data-label="Titulo" align="center"> {{ libro.titulo }}</td>
-                    <td data-label="Editorial" align="center">{{ libro.editorial }}</td>
-                    <td data-label="Cantidad" align="center">{{ libro.cantidad }}</td>
-                    <td data-label="Oferta" align="center" v-bind:style="styleOferta" v-if="libro.oferta">Está en oferta</td>
-                    <td data-label="Oferta" align="center" v-bind:style="styleNoOferta" v-else >No está en oferta</td>
-                    <td>
-                        <button class="ui button" v-on:click="editar(i)">
-                            Editar libro
-                          </button>
-                          <button class="ui button" v-on:click="borrar(i)">
-                            Eliminar libro
-                          </button>
-                    </td>
-                  </tr>                                    
-                </tbody>
-              </table>
+        <ul>
+          <li v-for="(libro,i) in ordenarLibrosCantidad">                       
+            {{libro.autor}}, 
+            {{libro.titulo}}, 
+            {{libro.editorial}}, 
+            {{libro.cantidad}}.           
+            <span v-bind:style="styleOferta" v-if="libro.oferta">Está en oferta</span>
+            <span v-bind:style="styleNoOferta" v-else >No está en oferta</span>
+            <button class="ui button" v-on:click="editar(i)">
+              Editar libro
+            </button>
+            <button class="ui button" v-on:click="borrar(i)">
+              Eliminar libro
+            </button>
+          </li>
+        </ul>
 
         <div>
           <h3> Peliculas: </h3>
-          <table class="ui celled table">
-          <thead>
-            <tr>
-            <th scope="col">Título</th>                  
-            <th scope="col">Director</th>                  
-            <th scope="col">Año</th>            
-          </tr></thead>
-          <tbody>
-            <tr v-for="pelicula in peliculas">              
-              <td data-label="Titulo" align="center"> {{pelicula.Titulo}}</td>
-              <td data-label="Director" align="center">{{pelicula.Director}}</td>
-              <td data-label="Cantidad" align="center">{{pelicula.Fecha}}</td>                         
-            </tr>                                    
-          </tbody>
-        </table>
+          <ul>
+          <li v-for="pelicula in peliculas">                                          
+                Título: {{pelicula.Titulo}}.
+                Director: {{pelicula.Director}}.
+                Año: {{pelicula.Fecha}}.                
+          </li>
+        </ul>
         </div>
 
         </div>
-<br>
+
         <div id="espacio">
            espacio
         </div>           
