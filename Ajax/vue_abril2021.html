@@ -1,0 +1,135 @@
+ <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue Semestre i</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   
+    <style>
+        
+    
+
+    </style>
+
+  </head>
+  	<body>
+        <div id="lugardetrabajo">            
+            <table class="ui celled table" style="float: left">
+                <thead>
+
+                    <!--Song categories-->
+                  <tr><th scope="col">Categorías</th>              
+                </tr></thead>
+                <tbody>
+                  <tr v-for="(dat,i) in datos">
+                    <td data-label="Categoria" align="center">{{ dat.name }}</td>                
+                  </tr>                                    
+                </tbody>
+              </table>
+
+              <!--Top 5 songs Api-->
+              <table class="ui celled table" style="float: left">
+                <thead>
+                  <tr><th scope="col">Top 5 Canciones</th>              
+                </tr></thead>
+                <tbody>
+                  <tr v-for="(dat,i) in canciones">
+                    <td data-label="Top5" align="center">{{ dat.name }}</td>                
+                  </tr>                                    
+                </tbody>
+              </table>  
+
+              <!--Nobel Prizes Api-->
+              <table class="ui celled table" style="float: left">
+                <thead>
+                  <tr><th scope="col">Premios Nobel por país</th>              
+                </tr></thead>
+                <tbody>                                        
+                  <tr v-for="(dat,i) in nobel">                      
+                    <td data-label="Top5" align="center">{{ dat.name }}</td>                
+                  </tr>              
+                  
+                </tbody>
+              </table>  
+
+              <!--Nobel Prizes Api-->
+              <table class="ui celled table" style="float: left">
+                <thead>
+                  <tr><th scope="col">Personas</th>              
+                </tr></thead>
+                <tbody>                                        
+                  <tr v-for="(dat,i) in uses">                      
+                    <td data-label="Top5" align="center">{{dat.first_name}} {{dat.last_name}} </td>                
+                  </tr>              
+                  
+                </tbody>
+              </table>  
+
+          
+            
+        </div>
+
+        <div id="espacio">
+           espacio
+        </div>
+
+       
+        
+
+
+		  <script type="text/javascript">
+
+          //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
+          c= new Vue({
+            el: "#lugardetrabajo",
+            data :{
+              nombre: "Spotify",
+              datos:[
+
+              ],
+              canciones:[
+
+              ],
+              nobel:[
+
+              ],
+              uses:[
+
+              ]
+            },
+            created(){
+                console.log ("instancia creada");
+                fetch("https://api.spotify.com/v1/browse/categories",{method: 'GET',
+                    headers:{
+                    'Content-type':'application/json',
+                    "Authorization":'Bearer BQA79VhUmmIs6QkLlwjtIir_UVmbdbrDPFtddsep5RldP3zD6M2vfZSeLTohfn9vbWo_nndsLv9kYo0MWVS3PhCQwM8EQbh038WT8K-uKumtelj7IDEwZqfhQrqBLu0CDpB1fMrIZcwnONbOtWyeBAml'
+            }})
+                .then(response => response.json())
+                .then(data => (this.datos=data.categories.items,console.log(data)));         
+                
+                fetch("https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=5",{method: 'GET',
+                    headers:{
+                    'Content-type':'application/json',
+                    "Authorization":'Bearer BQBT5EXwBiLZzl_UDrtpGoBKSdnz0P0gjQP24rFXQIviDgIkb-eOKrqG-0ojHh5f_I5drSfoP4vfW6-oj7aEmnSyjgskCrt0VG0_LBPkiJt_q1skL2CsHx6emNuiYYe7yEz2w81t1GksuajAyhwSU53h'
+                }})
+                .then(response => response.json())
+                .then(data=> (this.canciones=data.items,console.log(data)));
+                
+                fetch("http://api.nobelprize.org/v1/country.json",{ method: 'GET',
+                    headers: {
+                        'Accept': '*/*',
+                        'accept-encoding': 'gzip, deflate'
+                }})
+                .then(response => response.json())
+                .then(data => (this.nobel = data.countries)).then(data => (console.log(data)));
+
+                fetch("https://reqres.in/api/users?page=2",{ method: 'GET',
+                    headers: {
+                }})
+                .then(response => response.json())
+                .then(data => (this.uses = data.data)).then(data =>(console.log(data)));                
+            },
+          });
+
+		  </script>
+	</body>
+</html>
