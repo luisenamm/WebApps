@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Ejercicios 1 y 2</title>
+</head>
+<body>
+  <img src="hola.gif" >
+  <img src="mcdonalds.jpg" >
+
+<script>
+// Register the service worker
+if ('serviceWorker' in navigator) {
+     navigator.serviceWorker.register('/ejercicios.js').then(function(registration) {
+    console.log('ServiceWorker registro : ',registration.scope);
+
+}).catch(function(err) {
+
+    console.log('ServiceWorker error: ', err);
+    });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>#revolution#</title>
+</head>
+<body>
+  <img src="libros.gif" >
+  <img src="rita-segato.jpg" >
+
+<script>
+// Register the service worker
+if ('serviceWorker' in navigator) {
+     navigator.serviceWorker.register('/sw2.js').then(function(registration) {
+    console.log('ServiceWorker registro : ',registration.scope);
+
+}).catch(function(err) {
+
+    console.log('ServiceWorker error: ', err);
+    });
+}
+</script>
+</body>
+</html>
